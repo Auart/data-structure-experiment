@@ -1,0 +1,4 @@
+﻿  AddressBook.c
+D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\AddressBook.c(174,16): warning C4047: “函数”:“PABList *”与“PABList”的间接级别不同
+D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\AddressBook.c(174,16): warning C4024: “exitSystem”: 形参和实参 1 的类型不同
+  242040286_SeqList.vcxproj -> D:\workspace\code_project\c_project\242040286_SeqList\x64\Debug\242040286_SeqList.exe

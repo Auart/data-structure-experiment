@@ -1,0 +1,5 @@
+﻿  SeqList.c
+D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\SeqList.c(13,17): warning C4013: “malloc”未定义；假设外部返回 int
+D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\SeqList.c(13,7): warning C4312: “类型强制转换”: 从“int”转换到更大的“PSeqList”
+D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\SeqList.c(18,1): warning C4715: “Init_SeqList”: 不是所有的控件路径都返回值
+  242040286_SeqList.vcxproj -> D:\workspace\code_project\c_project\242040286_SeqList\242040286_SeqList\x64\Debug\242040286_SeqList.exe
