@@ -1,8 +1,5 @@
-﻿  AddressBook.c
-  SeqList.c
-  正在生成代码...
-D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\AddressBook.c(169,16): warning C4047: “函数”:“PABList *”与“PABList”的间接级别不同
-D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\AddressBook.c(169,16): warning C4024: “exitSystem”: 形参和实参 1 的类型不同
-D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\SeqList.c(1,10): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
-D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\SeqList.c(2,10): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
-LINK : fatal error LNK1168: 无法打开 D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\x64\Debug\242040286_SeqList.exe 进行写入
+﻿  SeqList.c
+D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\SeqList.c(41,3): warning C4033: “findlist”必须返回值
+D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\SeqList.c(64,10): warning C4047: “==”:“int”与“void *”的间接级别不同
+D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\242040286_SeqList\SeqList.c(52,1): warning C4715: “findlist”: 不是所有的控件路径都返回值
+  242040286_SeqList.vcxproj -> D:\workspace\code_project\c_project\data-structure\Experiment01\242040286_SeqList\x64\Debug\242040286_SeqList.exe
