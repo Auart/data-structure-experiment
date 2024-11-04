@@ -14,7 +14,7 @@ typedef struct {
 void clearScanf();
 PABList initABList();
 void displayMenuUI(const char* title, char** menuArr, int arrLength);
-void displayABList(PABList PL);
+void displayABList(PABList* PL);
 void freeABList(PABList* PL);
 void createAB(PABList* PL);
 void addAB(PABList* PL);
@@ -51,9 +51,9 @@ PABList initABList() {
 }
 
 
-void displayABList(PABList PL) {
-    for (int i = 0; i < PL->length; i++) {
-        printf("序号：%d 姓名：%s | 电话：%s\n", i + 1, PL->ab[i].name, PL->ab[i].phone);
+void displayABList(PABList * PL) {
+    for (int i = 0; i < (*PL)->length; i++) {
+        printf("序号：%d 姓名：%s | 电话：%s\n", i + 1, (*PL)->ab[i].name, (*PL)->ab[i].phone);
     }
 }
 
@@ -127,7 +127,7 @@ void findAB(PABList* PL) {
     AddressBook cab;
     scanf_s("%s", &cab.name, (unsigned)sizeof(cab.name));
     clearScanf();
-    printf("%d", (*PL)->length);
+   
     for (int i = 0; i < (*PL)->length; i++) {
         if (strcmp((*PL)->ab[i].name, cab.name) == 0) {
             printf("查找成功！该联系人信息如下\n序号%d |  姓名：%s | 电话：%s\n", i + 1, (*PL)->ab[i].name, (*PL)->ab[i].phone);
@@ -165,6 +165,6 @@ void menu() {
     } while (c != menuArrayLength);
     exitSystem(PL);
 }
-//void main() {
-//    menu();
-//}
+void main() {
+    menu();
+}
