@@ -127,15 +127,11 @@ void findAB(PABList* PL) {
     AddressBook cab;
     scanf_s("%s", &cab.name, (unsigned)sizeof(cab.name));
     clearScanf();
-   
     for (int i = 0; i < (*PL)->length; i++) {
         if (strcmp((*PL)->ab[i].name, cab.name) == 0) {
             printf("查找成功！该联系人信息如下\n序号%d |  姓名：%s | 电话：%s\n", i + 1, (*PL)->ab[i].name, (*PL)->ab[i].phone);
         }
-        else {
-            printf("未找到该联系人！\n");
-        }
-    }
+    }   
 }
 
 void displayAB(PABList* PL) {
