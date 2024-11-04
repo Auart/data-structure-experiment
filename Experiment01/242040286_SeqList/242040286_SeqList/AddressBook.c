@@ -113,9 +113,7 @@ void deleteAB(PABList* PL) {
             (*PL)->ab[(*PL)->length--] = ab;
             printf("删除成功！\n");
         }
-        else {
-            printf("未找到该联系人！\n");
-        }
+        
     }
 }
 void findAB(PABList* PL) {
@@ -161,6 +159,6 @@ void menu() {
     } while (c != menuArrayLength);
     exitSystem(PL);
 }
-void main() {
-    menu();
-}
+//void main() {
+//    menu();
+//}

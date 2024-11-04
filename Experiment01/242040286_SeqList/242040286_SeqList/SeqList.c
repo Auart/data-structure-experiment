@@ -106,47 +106,47 @@ void displayList(PseqList PL) {
 }
 
 
-//int main() {
-//    PseqList A = initList();
-//    addList(A, 2);
-//    addList(A, 3);
-//    addList(A, 1);
-//    printf("A的顺序表:\n");
-//    displayList(A);
-//   
-//    PseqList B = initList();
-//    addList(B, 1);
-//    addList(B, 2);
-//    addList(B, 4);
-//    printf("B的顺序表:\n");
-//    displayList(B);
-//    
-//    printf("A升序排序后的顺序表:\n");
-//    sortList(A, ASC);
-//    displayList(A);
-//    printf("A降序排序后的顺序表:\n");
-//    sortList(A, DESC);
-//    displayList(A);
-//    printf("B升序排序后的顺序表:\n");
-//    sortList(B, ASC);
-//    displayList(B);
-//    printf("B降排序后的顺序表:\n");
-//    sortList(B, DESC);
-//    displayList(B);
-//
-//
-//    PseqList merged = mergeList(A, B);
-//    printf("合并后的顺序表:\n");
-//    displayList(merged);
-//    printf("合并后的顺序表升序排序:\n");
-//    sortList(merged, ASC);
-//    displayList(merged);
-//    printf("合并后的顺序表降序排序:\n");
-//    sortList(merged, DESC);
-//    displayList(merged);
-//    free(A);
-//    free(B);
-//    free(merged);
-//
-//    return 0;
-//}
+int main() {
+    PseqList A = initList();
+    addList(A, 2);
+    addList(A, 3);
+    addList(A, 1);
+    printf("A的顺序表:\n");
+    displayList(A);
+   
+    PseqList B = initList();
+    addList(B, 1);
+    addList(B, 2);
+    addList(B, 4);
+    printf("B的顺序表:\n");
+    displayList(B);
+    
+    printf("A升序排序后的顺序表:\n");
+    sortList(A, ASC);
+    displayList(A);
+    printf("A降序排序后的顺序表:\n");
+    sortList(A, DESC);
+    displayList(A);
+    printf("B升序排序后的顺序表:\n");
+    sortList(B, ASC);
+    displayList(B);
+    printf("B降排序后的顺序表:\n");
+    sortList(B, DESC);
+    displayList(B);
+
+
+    PseqList merged = mergeList(A, B);
+    printf("合并后的顺序表:\n");
+    displayList(merged);
+    printf("合并后的顺序表升序排序:\n");
+    sortList(merged, ASC);
+    displayList(merged);
+    printf("合并后的顺序表降序排序:\n");
+    sortList(merged, DESC);
+    displayList(merged);
+    free(A);
+    free(B);
+    free(merged);
+
+    return 0;
+}
