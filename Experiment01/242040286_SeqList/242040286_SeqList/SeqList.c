@@ -30,6 +30,19 @@ void deleteList(PseqList PL, int item) {
 		printf("顺序表已为空！");
 	}
 }
+void findListByIndex(PseqList PL,int index) {
+	findlist(PL, PL->data[index]);
+}
+void findListByItem(PseqList PL,int item) {
+	findlist(PL, item);
+}
+void findlist(PseqList PL, void *element) {
+	if (!PL == NULL || !(PL->length) <= 1) {
+		for (int i; i < PL->length; i++) {
+			PL->data[i] == element ? printf("元素已找到！") : printf("元素未找到！");
+		}
+	}
+}
 
 
 
