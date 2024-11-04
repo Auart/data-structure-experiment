@@ -21,6 +21,15 @@ void addList(PseqList PL, int item) {
 		printf("顺序表已达到最大存储范围");
 	}
 }
+void deleteList(PseqList PL, int item) {
+
+	if (PL->length < MAXLEN) {
+		PL->data[PL->length--] = item;
+	}
+	else {
+		printf("顺序表已为空！");
+	}
+}
 
 
 
