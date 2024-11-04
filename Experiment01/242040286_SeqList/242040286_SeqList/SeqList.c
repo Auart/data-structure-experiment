@@ -1,6 +1,10 @@
 #include "stdio.h";
 #include "stdlib.h";
 #define MAXLEN 100
+typedef enum 
+{
+	ASC,DESC
+} SortType;
 
 typedef struct {
 	int data[MAXLEN];
@@ -43,7 +47,20 @@ void findlist(PseqList PL, void *element) {
 		}
 	}
 }
-
+void sortList(PseqList PL , SortType type) {
+	if (!PL == NULL || !(PL->length) <= 1) {
+		int sortTypeInt =((type == ASC) ? 1 : -1);
+		for (int i = 0; i < PL->length - 1; i++) {
+			for (int j = 0; j < PL->length - i - 1; j++) {
+				if (sortTypeInt * (PL->data[j]) < sortTypeInt * (PL->data[j+1]) ) {
+					int temp = PL->data[j];
+					PL->data[j] = PL->data[j + 1];
+					PL->data[j + 1] = temp;
+				}
+			}
+		}
+	}
+}
 
 
 void main() {
