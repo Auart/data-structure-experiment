@@ -13,6 +13,14 @@ PseqList initList() {
 		PL->length = 0;
 	return PL;
 }
+void addList(PseqList PL, int item) {
+	if (PL->length < MAXLEN) {
+		PL->data[PL->length++] = item;
+	}
+	else {
+		printf("顺序表已达到最大存储范围");
+	}
+}
 
 
 
