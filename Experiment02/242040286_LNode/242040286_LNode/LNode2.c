@@ -25,4 +25,13 @@ ListList createTailInsert(ListList head, int value) {
     temp->next = newNode;
     return head;
 }
+// 打印
+void printList(ListList head) {
+    LNode* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
 
