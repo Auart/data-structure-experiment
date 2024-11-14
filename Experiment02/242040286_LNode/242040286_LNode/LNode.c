@@ -19,19 +19,22 @@ LinkList headInsertList(LinkList head, int item)
     return nodeList;
 }
 
-//尾插法
-LinkList tailInsertList(LinkList head, int item){
+// 尾插法
+LinkList tailInsertList(LinkList head, int item)
+{
     LinkList nodeList = malloc(sizeof(LNode));
     if (!nodeList)
         return NULL;
     nodeList->data = item;
     nodeList->next = NULL;
-    if(head == NULL){
+    if (head == NULL)
+    {
         return nodeList;
-    } 
+    }
 
     LinkList current = head;
-    while(current->next!=NULL){
+    while (current->next != NULL)
+    {
         current = current->next;
     }
 
@@ -39,8 +42,35 @@ LinkList tailInsertList(LinkList head, int item){
     return head;
 }
 
+// 任意插入
+LinkList insertNode(LinkList head, int position, int item)
+{
+    LinkList nodeList = malloc(sizeof(LNode));
+    LinkList->data = item;
+    if (position == 0)
+    {
+        nodeList->next = head;
+        return nodeList;
+    }
 
-int main(){
-
+    LinkList current = head;
+    for (int i = 0; i < position - 1 && current != NULL; i++)
+    {
+        current = current->next;
+    }
+    if (current == NULL)
+    {
+        printf("插入位置超出链表长度\n");
+        free(nodeList);
+        return head;
+    }
+    nodeList->next = current->next;
+    current->next = nodeList;
+    return head;
 }
 
+
+
+int main()
+{
+}
