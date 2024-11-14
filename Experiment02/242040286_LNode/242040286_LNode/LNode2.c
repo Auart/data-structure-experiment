@@ -13,4 +13,16 @@ LNode* createNode(int data) {
     newNode->next = NULL;
     return newNode;
 }
+// 尾插法
+ListList createTailInsert(ListList head, int value) {
+    LNode* newNode = createNode(value);
+    if (head == NULL) return newNode;
+    
+    LNode* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+    return head;
+}
 
