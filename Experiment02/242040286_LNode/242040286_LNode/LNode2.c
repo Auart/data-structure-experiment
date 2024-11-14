@@ -34,4 +34,48 @@ void printList(ListList head) {
     }
     printf("NULL\n");
 }
+// 并集
+ListList unionSet(ListList list1, ListList list2) {
+    ListList result = NULL;
+    LNode* p1 = list1;
+    LNode* p2 = list2;
+    LNode* last = NULL;
+
+    while (p1 != NULL && p2 != NULL) {
+        int value;
+        if (p1->data < p2->data) {
+            value = p1->data;
+            p1 = p1->next;
+        } else if (p1->data > p2->data) {
+            value = p2->data;
+            p2 = p2->next;
+        } else {
+            value = p1->data;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        LNode* newNode = createNode(value);
+        if (last == NULL) result = newNode;
+        else last->next = newNode;
+        last = newNode;
+    }
+
+    while (p1 != NULL) {
+        LNode* newNode = createNode(p1->data);
+        if (last == NULL) result = newNode;
+        else last->next = newNode;
+        last = newNode;
+        p1 = p1->next;
+    }
+
+    while (p2 != NULL) {
+        LNode* newNode = createNode(p2->data);
+        if (last == NULL) result = newNode;
+        else last->next = newNode;
+        last = newNode;
+        p2 = p2->next;
+    }
+    
+    return result;
+}
 
