@@ -15,10 +15,29 @@ LinkList headInsertList(LinkList head, int item)
     if (!nodeList)
         return NULL;
     nodeList->data = item;
-    nodeList->next;
+    nodeList->head;
     return nodeList;
 }
 
+//尾插法
+LinkList tailInsertList(LinkList head, int item){
+    LinkList nodeList = malloc(sizeof(LNode));
+    if (!nodeList)
+        return NULL;
+    nodeList->data = item;
+    nodeList->next = NULL;
+    if(head == NULL){
+        return nodeList;
+    } 
+
+    LinkList current = head;
+    while(current->next!=NULL){
+        current = current->next;
+    }
+
+    current->next = nodeList;
+    return head;
+}
 
 
 int main(){
