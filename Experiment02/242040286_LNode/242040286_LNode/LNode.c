@@ -107,6 +107,18 @@ LinkList findNode(LinkList head, int item){
     return NULL;
 }
 
+//逆置
+LinkList reverseList(LinkList head){
+    LinkList previous = NULL, current = head, next = NULL;
+    while(current!= NULL){
+        next = current->next;
+        current->next = previous;
+        previous = current;
+        current = next;
+    }
+    return previous;
+}
+
 
 int main()
 {
