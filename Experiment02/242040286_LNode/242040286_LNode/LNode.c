@@ -6,12 +6,12 @@ typedef struct LNode
 {
     int data;           // 数据域
     struct LNode *next; // 指针域
-} LNode, *ListList;
+} LNode, *LinkList;
 
 // 头插法
-ListList headInsertList(ListList head, int item)
+LinkList headInsertList(LinkList head, int item)
 {
-    ListList nodeList = malloc(sizeof(LNode));
+    LinkList nodeList = malloc(sizeof(LNode));
     if (!nodeList)
         return NULL;
     nodeList->data = item;
@@ -22,6 +22,6 @@ ListList headInsertList(ListList head, int item)
 
 
 int main(){
-    
+
 }
 
