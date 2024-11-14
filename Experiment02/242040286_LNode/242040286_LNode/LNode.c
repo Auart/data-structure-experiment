@@ -1,26 +1,27 @@
 #include <stdio.h>
-#include <malloc.h>
-#define  DataType int;
+#include <stdlib.h>
 
-typedef struct LNode{
-    DataType Data;
-    struct LNode *next;
-} LNode ,*LinkList;
+// 定义链表节点结构
+typedef struct LNode
+{
+    int data;           // 数据域
+    struct LNode *next; // 指针域
+} LNode, *ListList;
 
-//初始化单链表
-LinkList initList(){
-   LinkList H;
-   H=malloc(sizeof(LNode));
-   if(H){
-    H->next=NULL;
-   }
-   return H;
+// 头插法
+ListList headInsertList(ListList head, int item)
+{
+    ListList nodeList = malloc(sizeof(LNode));
+    if (!nodeList)
+        return NULL;
+    nodeList->data = item;
+    nodeList->next;
+    return nodeList;
 }
-
 
 
 
 int main(){
     
-    return 0;
-}2
+}
+
