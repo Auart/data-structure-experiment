@@ -78,4 +78,25 @@ ListList unionSet(ListList list1, ListList list2) {
     
     return result;
 }
+// 交集
+ListList intersectionSet(ListList list1, ListList list2) {
+    ListList result = NULL;
+    LNode* last = NULL;
+    
+    while (list1 != NULL && list2 != NULL) {
+        if (list1->data < list2->data) {
+            list1 = list1->next;
+        } else if (list1->data > list2->data) {
+            list2 = list2->next;
+        } else {
+            LNode* newNode = createNode(list1->data);
+            if (last == NULL) result = newNode;
+            else last->next = newNode;
+            last = newNode;
+            list1 = list1->next;
+            list2 = list2->next;
+        }
+    }
+    return result;
+}
 
