@@ -94,7 +94,18 @@ LinkList removeNode(LinkList head, int position){
     free(temp);
     return head;
 }
-
+//查找
+LinkList findNode(LinkList head, int item){
+    LinkList current = head;
+    while(current!= NULL){
+        if(current->data == item){
+            return current;
+        }
+        current = current->next;
+    }
+    printf("未找到该元素\n");
+    return NULL;
+}
 
 
 int main()
