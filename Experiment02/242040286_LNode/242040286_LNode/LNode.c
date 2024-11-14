@@ -68,24 +68,28 @@ LinkList insertNode(LinkList head, int position, int item)
     current->next = nodeList;
     return head;
 }
-//删除
-LinkList removeNode(LinkList head, int position){
-    if(head == NULL){
+// 删除
+LinkList removeNode(LinkList head, int position)
+{
+    if (head == NULL)
+    {
         printf("链表为空\n");
         return head;
     }
-    if(position == 0){
+    if (position == 0)
+    {
         LinkList temp = head;
         head = head->next;
         free(temp);
         return head;
     }
     LinkList current = head;
-    for(int i = 0; i < position - 1 && current!= NULL; i++){
+    for (int i = 0; i < position - 1 && current != NULL; i++)
+    {
         current = current->next;
-    
     }
-    if(current == NULL || current->next == NULL){
+    if (current == NULL || current->next == NULL)
+    {
         printf("删除位置超出链表长度\n");
         return head;
     }
@@ -94,11 +98,14 @@ LinkList removeNode(LinkList head, int position){
     free(temp);
     return head;
 }
-//查找
-LinkList findNode(LinkList head, int item){
+// 查找
+LinkList findNode(LinkList head, int item)
+{
     LinkList current = head;
-    while(current!= NULL){
-        if(current->data == item){
+    while (current != NULL)
+    {
+        if (current->data == item)
+        {
             return current;
         }
         current = current->next;
@@ -107,10 +114,12 @@ LinkList findNode(LinkList head, int item){
     return NULL;
 }
 
-//逆置
-LinkList reverseList(LinkList head){
+// 逆置
+LinkList reverseList(LinkList head)
+{
     LinkList previous = NULL, current = head, next = NULL;
-    while(current!= NULL){
+    while (current != NULL)
+    {
         next = current->next;
         current->next = previous;
         previous = current;
@@ -118,6 +127,18 @@ LinkList reverseList(LinkList head){
     }
     return previous;
 }
+// 打印
+void printList(LinkList head)
+{
+    LinkList current = head;
+    while (current != NULL)
+    {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
 
 
 int main()
