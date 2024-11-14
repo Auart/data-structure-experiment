@@ -42,7 +42,7 @@ LinkList tailInsertList(LinkList head, int item)
     return head;
 }
 
-// 任意插入
+// 任意位置插入
 LinkList insertNode(LinkList head, int position, int item)
 {
     LinkList nodeList = malloc(sizeof(LNode));
@@ -66,6 +66,32 @@ LinkList insertNode(LinkList head, int position, int item)
     }
     nodeList->next = current->next;
     current->next = nodeList;
+    return head;
+}
+//删除
+LinkList removeNode(LinkList head, int position){
+    if(head == NULL){
+        printf("链表为空\n");
+        return head;
+    }
+    if(position == 0){
+        LinkList temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+    LinkList current = head;
+    for(int i = 0; i < position - 1 && current!= NULL; i++){
+        current = current->next;
+    
+    }
+    if(current == NULL || current->next == NULL){
+        printf("删除位置超出链表长度\n");
+        return head;
+    }
+    LinkList temp = current->next;
+    current->next = current->next->next;
+    free(temp);
     return head;
 }
 
