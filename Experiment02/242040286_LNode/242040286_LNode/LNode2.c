@@ -119,4 +119,44 @@ ListList differenceSet(ListList list1, ListList list2) {
     }
     return result;
 }
+// 以首节点值为基准分割链表
+ListList partition(ListList head) {
+    if (head == NULL) return NULL;
+    
+    int pivot = head->data;
+    LNode *lessHead = NULL, *lessTail = NULL;
+    LNode *greaterHead = NULL, *greaterTail = NULL;
+    LNode *current = head->next;
+
+    while (current != NULL) {
+        if (current->data < pivot) {
+            if (lessTail == NULL) {
+                lessHead = lessTail = current;
+            } else {
+                lessTail->next = current;
+                lessTail = current;
+            }
+        } else {
+            if (greaterTail == NULL) {
+                greaterHead = greaterTail = current;
+            } else {
+                greaterTail->next = current;
+                greaterTail = current;
+            }
+        }
+        current = current->next;
+    }
+
+    if (lessTail != NULL) {
+        lessTail->next = head;
+        head->next = greaterHead;
+        if (greaterTail != NULL) greaterTail->next = NULL;
+        return lessHead;
+    } else {
+        head->next = greaterHead;
+        if (greaterTail != NULL) greaterTail->next = NULL;
+        return head;
+    }
+}
+
 
