@@ -139,8 +139,42 @@ void printList(LinkList head)
     printf("\n");
 }
 
-
-
-int main()
+void main()
 {
+    LinkList head = NULL;
+    //头插法
+    head = headInsertList(head,3);
+    head = headInsertList(head,1);
+    head = headInsertList(head,1);
+    printf("头插法：");
+    printList(head);
+
+    //尾插法
+    head = tailInsertList(head,2);
+    head = tailInsertList(head,4);
+    printf("尾插法：");
+    printList(head);
+
+    //任意位置插入
+    head = insertNode(head, 1, 0);
+    printf("任意位置插入：");
+    printList(head);
+
+    // 删除
+    head = removeNode(head, 1);
+    printf("删除位置为1的元素：");
+    printList(head);
+    
+    //查找
+    LinkList node = findNode(head, 1);
+    if (node!= NULL)
+        printf("找到元素：%d\n", node->data);
+    else
+        printf("未找到元素\n");
+
+    //逆置
+    head = reverseList(head);
+    printf("逆置：");
+    printList(head);
+    
 }
