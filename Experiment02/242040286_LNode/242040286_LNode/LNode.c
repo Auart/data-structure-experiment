@@ -1,180 +1,188 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 定义链表节点结构
-typedef struct LNode
-{
-    int data;           // 数据域
-    struct LNode *next; // 指针域
-} LNode, *LinkList;
+// 定义链表节点结构体
+typedef struct LNode {
+    int data;
+    struct LNode* next;
+} LNode;
 
-// 头插法
-LinkList headInsertList(LinkList head, int item)
-{
-    LinkList nodeList = malloc(sizeof(LNode));
-    if (!nodeList)
-        return NULL;
-    nodeList->data = item;
-    nodeList->head;
-    return nodeList;
+// 创建空节点（仅分配内存）
+LNode* createEmptyNode() {
+    LNode* node = (LNode*)malloc(sizeof(LNode));
+    node->data = 0;
+    node->next = NULL;
+    return node;
 }
 
-// 尾插法
-LinkList tailInsertList(LinkList head, int item)
-{
-    LinkList nodeList = malloc(sizeof(LNode));
-    if (!nodeList)
-        return NULL;
-    nodeList->data = item;
-    nodeList->next = NULL;
-    if (head == NULL)
-    {
-        return nodeList;
+// 初始化节点数据
+LNode* initNode(int data) {
+    LNode* node = createEmptyNode();
+    node->data = data;
+    return node;
+}
+
+// 头插法插入新节点
+void insertHead(LNode** head, int data) {
+    LNode* newNode = initNode(data);
+    newNode->next = *head;
+    *head = newNode;
+}
+
+// 尾插法插入新节点
+void insertTail(LNode** head, int data) {
+    LNode* newNode = initNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        LNode* current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+}
+
+// 根据索引插入新节点
+void insertAtIndex(LNode** head, int index, int data) {
+    if (index < 0) {
+        printf("无效的索引\n");
+        return;
     }
 
-    LinkList current = head;
-    while (current->next != NULL)
-    {
+    LNode* newNode = initNode(data);
+    if (index == 0) {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+
+    LNode* current = *head;
+    for (int i = 0; i < index - 1 && current != NULL; i++) {
         current = current->next;
     }
 
-    current->next = nodeList;
-    return head;
-}
-
-// 任意位置插入
-LinkList insertNode(LinkList head, int position, int item)
-{
-    LinkList nodeList = malloc(sizeof(LNode));
-    LinkList->data = item;
-    if (position == 0)
-    {
-        nodeList->next = head;
-        return nodeList;
+    if (current == NULL) {
+        printf("索引超出范围\n");
+        free(newNode);
+        return;
     }
 
-    LinkList current = head;
-    for (int i = 0; i < position - 1 && current != NULL; i++)
-    {
+    newNode->next = current->next;
+    current->next = newNode;
+}
+
+// 删除指定值的节点
+void deleteByValue(LNode** head, int data) {
+    LNode* current = *head;
+    LNode* prev = NULL;
+
+    while (current != NULL && current->data != data) {
+        prev = current;
         current = current->next;
     }
-    if (current == NULL)
-    {
-        printf("插入位置超出链表长度\n");
-        free(nodeList);
-        return head;
+
+    if (current == NULL) {
+        printf("未找到值 %d\n", data);
+        return;
     }
-    nodeList->next = current->next;
-    current->next = nodeList;
-    return head;
+
+    if (prev == NULL) {
+        *head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+    free(current);
 }
-// 删除
-LinkList removeNode(LinkList head, int position)
-{
-    if (head == NULL)
-    {
-        printf("链表为空\n");
-        return head;
-    }
-    if (position == 0)
-    {
-        LinkList temp = head;
-        head = head->next;
-        free(temp);
-        return head;
-    }
-    LinkList current = head;
-    for (int i = 0; i < position - 1 && current != NULL; i++)
-    {
-        current = current->next;
-    }
-    if (current == NULL || current->next == NULL)
-    {
-        printf("删除位置超出链表长度\n");
-        return head;
-    }
-    LinkList temp = current->next;
-    current->next = current->next->next;
-    free(temp);
-    return head;
-}
-// 查找
-LinkList findNode(LinkList head, int item)
-{
-    LinkList current = head;
-    while (current != NULL)
-    {
-        if (current->data == item)
-        {
-            return current;
+
+// 查找值为 data 的节点的索引
+int findIndex(LNode* head, int data) {
+    LNode* current = head;
+    int index = 0;
+
+    while (current != NULL) {
+        if (current->data == data) {
+            return index;
         }
         current = current->next;
+        index++;
     }
-    printf("未找到该元素\n");
-    return NULL;
+
+    return -1;
 }
 
-// 逆置
-LinkList reverseList(LinkList head)
-{
-    LinkList previous = NULL, current = head, next = NULL;
-    while (current != NULL)
-    {
+// 链表逆置
+void reverseList(LNode** head) {
+    LNode* prev = NULL;
+    LNode* current = *head;
+    LNode* next = NULL;
+
+    while (current != NULL) {
         next = current->next;
-        current->next = previous;
-        previous = current;
+        current->next = prev;
+        prev = current;
         current = next;
     }
-    return previous;
+    *head = prev;
 }
-// 打印
-void printList(LinkList head)
-{
-    LinkList current = head;
-    while (current != NULL)
-    {
-        printf("%d ", current->data);
+
+// 打印链表中的元素
+void displayList(LNode* head) {
+    LNode* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
         current = current->next;
     }
-    printf("\n");
+    printf("NULL\n");
 }
 
-void main()
-{
-    LinkList head = NULL;
-    //头插法
-    head = headInsertList(head,3);
-    head = headInsertList(head,1);
-    head = headInsertList(head,1);
-    printf("头插法：");
-    printList(head);
+// 释放链表所占用的内存
+void freeList(LNode* head) {
+    LNode* current = head;
+    while (current != NULL) {
+        LNode* temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
 
-    //尾插法
-    head = tailInsertList(head,2);
-    head = tailInsertList(head,4);
-    printf("尾插法：");
-    printList(head);
 
-    //任意位置插入
-    head = insertNode(head, 1, 0);
-    printf("任意位置插入：");
-    printList(head);
+int main() {
+    LNode* head = NULL;
 
-    // 删除
-    head = removeNode(head, 1);
-    printf("删除位置为1的元素：");
-    printList(head);
-    
-    //查找
-    LinkList node = findNode(head, 1);
-    if (node!= NULL)
-        printf("找到元素：%d\n", node->data);
-    else
-        printf("未找到元素\n");
+    // 头插法创建链表
+    insertHead(&head, 10);
+    insertHead(&head, 20);
+    insertHead(&head, 30);
+    printf("链表（头插法创建）: ");
+    displayList(head);
 
-    //逆置
-    head = reverseList(head);
-    printf("逆置：");
-    printList(head);
-    
+    // 尾插法创建链表
+    insertTail(&head, 40);
+    insertTail(&head, 50);
+    printf("链表（尾插法创建）: ");
+    displayList(head);
+
+    // 插入节点
+    insertAtIndex(&head, 2, 25);
+    printf("链表（插入 25 在索引 2）: ");
+    displayList(head);
+
+    // 删除节点
+    deleteByValue(&head, 10);
+    printf("链表（删除值为 10 的节点）: ");
+    displayList(head);
+
+    // 查找节点
+    int index = findIndex(head, 40);
+    printf("查找值为 40 的节点索引: %d\n", index);
+
+    // 逆置链表
+    reverseList(&head);
+    printf("链表（逆置后）: ");
+    displayList(head);
+
+    // 释放链表内存
+    freeList(head);
+    return 0;
 }

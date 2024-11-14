@@ -1,201 +1,179 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct LNode {
-    int data;              
-    struct LNode *next;    
-} LNode, *ListList;
+// 定义链表节点
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
 
-// 创建
-LNode* createNode(int data) {
-    LNode* newNode = malloc(sizeof(LNode));
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
+// 创建新节点
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
 }
-// 尾插法
-ListList createTailInsert(ListList head, int value) {
-    LNode* newNode = createNode(value);
-    if (head == NULL) return newNode;
-    
-    LNode* temp = head;
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-    temp->next = newNode;
-    return head;
-}
-// 打印
-void printList(ListList head) {
-    LNode* temp = head;
-    while (temp != NULL) {
-        printf("%d -> ", temp->data);
-        temp = temp->next;
-    }
-    printf("NULL\n");
-}
-// 并集
-ListList unionSet(ListList list1, ListList list2) {
-    ListList result = NULL;
-    LNode* p1 = list1;
-    LNode* p2 = list2;
-    LNode* last = NULL;
 
-    while (p1 != NULL && p2 != NULL) {
-        int value;
-        if (p1->data < p2->data) {
-            value = p1->data;
-            p1 = p1->next;
-        } else if (p1->data > p2->data) {
-            value = p2->data;
-            p2 = p2->next;
-        } else {
-            value = p1->data;
-            p1 = p1->next;
-            p2 = p2->next;
+// 插入节点到递增链表
+void addToSorted(Node** head, int data) {
+    Node* fresh = newNode(data);
+    if (*head == NULL || (*head)->data >= data) {
+        fresh->next = *head;
+        *head = fresh;
+    } else {
+        Node* curr = *head;
+        while (curr->next != NULL && curr->next->data < data) {
+            curr = curr->next;
         }
-        LNode* newNode = createNode(value);
-        if (last == NULL) result = newNode;
-        else last->next = newNode;
-        last = newNode;
+        fresh->next = curr->next;
+        curr->next = fresh;
     }
+}
 
-    while (p1 != NULL) {
-        LNode* newNode = createNode(p1->data);
-        if (last == NULL) result = newNode;
-        else last->next = newNode;
-        last = newNode;
-        p1 = p1->next;
+// 合并两个链表
+Node* combineLists(Node* list1, Node* list2) {
+    Node* result = NULL;
+    while (list1 != NULL) {
+        addToSorted(&result, list1->data);
+        list1 = list1->next;
     }
-
-    while (p2 != NULL) {
-        LNode* newNode = createNode(p2->data);
-        if (last == NULL) result = newNode;
-        else last->next = newNode;
-        last = newNode;
-        p2 = p2->next;
+    while (list2 != NULL) {
+        addToSorted(&result, list2->data);
+        list2 = list2->next;
     }
-    
     return result;
 }
-// 交集
-ListList intersectionSet(ListList list1, ListList list2) {
-    ListList result = NULL;
-    LNode* last = NULL;
-    
+
+// 获取交集
+Node* findIntersection(Node* list1, Node* list2) {
+    Node* result = NULL;
     while (list1 != NULL && list2 != NULL) {
         if (list1->data < list2->data) {
             list1 = list1->next;
         } else if (list1->data > list2->data) {
             list2 = list2->next;
         } else {
-            LNode* newNode = createNode(list1->data);
-            if (last == NULL) result = newNode;
-            else last->next = newNode;
-            last = newNode;
+            addToSorted(&result, list1->data);
             list1 = list1->next;
             list2 = list2->next;
         }
     }
     return result;
 }
-// 差集
-ListList differenceSet(ListList list1, ListList list2) {
-    ListList result = NULL;
-    LNode* last = NULL;
 
+// 计算差集
+Node* findDifference(Node* list1, Node* list2) {
+    Node* result = NULL;
     while (list1 != NULL) {
-        while (list2 != NULL && list2->data < list1->data) {
-            list2 = list2->next;
+        Node* temp = list2;
+        int found = 0;
+        while (temp != NULL) {
+            if (list1->data == temp->data) {
+                found = 1;
+                break;
+            }
+            temp = temp->next;
         }
-        
-        if (list2 == NULL || list1->data < list2->data) {
-            LNode* newNode = createNode(list1->data);
-            if (last == NULL) result = newNode;
-            else last->next = newNode;
-            last = newNode;
+        if (!found) {
+            addToSorted(&result, list1->data);
         }
         list1 = list1->next;
     }
     return result;
 }
-// 以首节点值为基准分割链表
-ListList partition(ListList head) {
-    if (head == NULL) return NULL;
-    
-    int pivot = head->data;
-    LNode *lessHead = NULL, *lessTail = NULL;
-    LNode *greaterHead = NULL, *greaterTail = NULL;
-    LNode *current = head->next;
+
+// 按基准值拆分
+void splitByPivot(Node** head, int x) {
+    Node* less = NULL;
+    Node* moreOrEqual = NULL;
+    Node* current = *head;
 
     while (current != NULL) {
-        if (current->data < pivot) {
-            if (lessTail == NULL) {
-                lessHead = lessTail = current;
-            } else {
-                lessTail->next = current;
-                lessTail = current;
-            }
+        if (current->data < x) {
+            addToSorted(&less, current->data);
         } else {
-            if (greaterTail == NULL) {
-                greaterHead = greaterTail = current;
-            } else {
-                greaterTail->next = current;
-                greaterTail = current;
-            }
+            addToSorted(&moreOrEqual, current->data);
         }
         current = current->next;
     }
 
-    if (lessTail != NULL) {
-        lessTail->next = head;
-        head->next = greaterHead;
-        if (greaterTail != NULL) greaterTail->next = NULL;
-        return lessHead;
+    if (less == NULL) {
+        *head = moreOrEqual;
     } else {
-        head->next = greaterHead;
-        if (greaterTail != NULL) greaterTail->next = NULL;
-        return head;
+        *head = less;
+        Node* temp = less;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = moreOrEqual;
     }
 }
-void main() {
-    // 创建集合a
-    ListList a = NULL;
-    a = createTailInsert(a, 1);
-    a = createTailInsert(a, 3);
-    a = createTailInsert(a, 5);
-    a = createTailInsert(a, 9);
-    printf("集合a: ");
-    printList(a);
 
-    // 创建集合b
-    ListList b = NULL;
-    b = createTailInsert(b, 2);
-    b = createTailInsert(b, 3);
-    b = createTailInsert(b, 5);
-    b = createTailInsert(b, 9);
-    printf("集合2: ");
-    printList(b);
-
-    // 求并集
-    ListList unionSet = unionSet(a, b);
-    printf("并集: ");
-    printList(unionSet);
-
-    // 求交集
-    ListList intersectionSet = intersectionSet(a, b);
-    printf("交集: ");
-    printList(intersectionSet);
-
-    // 求差集
-    ListList differenceSet = differenceSet(a, b);
-    printf("差集 (a - b): ");
-    printList(differenceSet);
-
-    // 基准分割
-    ListList partition = partition(a);
-    printf("基准分割: ");
-    printList(partition);
+// 打印链表
+void displayList(Node* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
 }
 
+// 释放链表内存
+void freeNodes(Node* head) {
+    Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
 
+int main() {
+    Node* a = NULL;
+    Node* b = NULL;
+
+    // 插入数据到集合 1 和集合 2
+    addToSorted(&a, 1);
+    addToSorted(&a, 3);
+    addToSorted(&a, 5);
+    addToSorted(&a, 7);
+    addToSorted(&b, 3);
+    addToSorted(&b, 4);
+    addToSorted(&b, 7);
+    addToSorted(&b, 8);
+
+    printf("集合 a: ");
+    displayList(a);
+    printf("集合 b: ");
+    displayList(b);
+
+    // 求并集
+    Node* unionSet = combineLists(a, b);
+    printf("并集: ");
+    displayList(unionSet);
+
+    // 求交集
+    Node* intersectionSet = findIntersection(a, b);
+    printf("交集: ");
+    displayList(intersectionSet);
+
+    // 求差集 (集合 a - 集合 b)
+    Node* differenceSet = findDifference(a, b);
+    printf("差集 (集合 1 - 集合 2): ");
+    displayList(differenceSet);
+
+    // 基准值分割集合 a
+    printf("基准值分割集合 a (基准值为 5): ");
+    splitByPivot(&a, 5);
+    displayList(a);
+
+    // 释放链表内存
+    freeNodes(a);
+    freeNodes(b);
+    freeNodes(unionSet);
+    freeNodes(intersectionSet);
+    freeNodes(differenceSet);
+
+    return 0;
+}
