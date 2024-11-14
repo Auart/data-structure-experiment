@@ -158,5 +158,44 @@ ListList partition(ListList head) {
         return head;
     }
 }
+void main() {
+    // 创建集合a
+    ListList a = NULL;
+    a = createTailInsert(a, 1);
+    a = createTailInsert(a, 3);
+    a = createTailInsert(a, 5);
+    a = createTailInsert(a, 9);
+    printf("集合a: ");
+    printList(a);
+
+    // 创建集合b
+    ListList b = NULL;
+    b = createTailInsert(b, 2);
+    b = createTailInsert(b, 3);
+    b = createTailInsert(b, 5);
+    b = createTailInsert(b, 9);
+    printf("集合2: ");
+    printList(b);
+
+    // 求并集
+    ListList unionSet = unionSet(a, b);
+    printf("并集: ");
+    printList(unionSet);
+
+    // 求交集
+    ListList intersectionSet = intersectionSet(a, b);
+    printf("交集: ");
+    printList(intersectionSet);
+
+    // 求差集
+    ListList differenceSet = differenceSet(a, b);
+    printf("差集 (a - b): ");
+    printList(differenceSet);
+
+    // 基准分割
+    ListList partition = partition(a);
+    printf("基准分割: ");
+    printList(partition);
+}
 
 
