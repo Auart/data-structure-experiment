@@ -99,4 +99,24 @@ ListList intersectionSet(ListList list1, ListList list2) {
     }
     return result;
 }
+// 差集
+ListList differenceSet(ListList list1, ListList list2) {
+    ListList result = NULL;
+    LNode* last = NULL;
+
+    while (list1 != NULL) {
+        while (list2 != NULL && list2->data < list1->data) {
+            list2 = list2->next;
+        }
+        
+        if (list2 == NULL || list1->data < list2->data) {
+            LNode* newNode = createNode(list1->data);
+            if (last == NULL) result = newNode;
+            else last->next = newNode;
+            last = newNode;
+        }
+        list1 = list1->next;
+    }
+    return result;
+}
 
