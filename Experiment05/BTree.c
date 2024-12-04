@@ -98,6 +98,9 @@ void Postorder(BTree t) {
 
 int main() {
     BTree root;
+    int num[100] = {0};  // 用于记录每层的结点数
+    int treeHeight;
+
     printf("请输入先序序列（#代表空节点）: ");
     root = CreateBinTree();  // 创建二叉树
 
@@ -112,6 +115,20 @@ int main() {
     printf("后序遍历: ");
     Postorder(root);
     printf("\n");
+
+    printf("\n二叉树的结点数: %d\n", CountTree(root));
+    printf("二叉树的叶子结点数: %d\n", CountLeaf(root));
+
+    treeHeight = Height(root);
+    printf("二叉树的高度: %d\n", treeHeight);
+
+    Levcount(root, 0, num);
+    printf("每层结点数: ");
+    for (int i = 0; i < treeHeight; i++) {
+        printf("%d ", num[i]);
+    }
+    printf("\n");
+
 
     return 0;
 }
