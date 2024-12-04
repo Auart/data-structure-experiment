@@ -7,6 +7,43 @@ typedef struct BNode {
     struct BNode* lchild; // 左子树
     struct BNode* rchild; // 右子树
 } BNode, *BTree;
+// 计算二叉树的结点数
+int CountTree(BTree t) {
+    if (t == NULL) {
+        return 0;
+    }
+    return CountTree(t->lchild) + CountTree(t->rchild) + 1;  // 左右子树结点数加1
+}
+
+// 计算二叉树的叶子结点数
+int CountLeaf(BTree t) {
+    if (t == NULL) {
+        return 0;
+    }
+    if (t->lchild == NULL && t->rchild == NULL) {
+        return 1;  // 是叶子结点
+    }
+    return CountLeaf(t->lchild) + CountLeaf(t->rchild);  // 递归计算左、右子树的叶子结点数
+}
+
+// 计算二叉树的高度
+int Height(BTree t) {
+    if (t == NULL) {
+        return 0;
+    }
+    int hl = Height(t->lchild);  // 计算左子树的高度
+    int hr = Height(t->rchild);  // 计算右子树的高度
+    return (hl > hr) ? hl + 1 : hr + 1;  // 返回较大高度 + 1
+}
+
+// 计算每层结点数
+void Levcount(BTree t, int level, int num[]) {
+    if (t) {
+        num[level]++;  // 当前层结点数加1
+        Levcount(t->lchild, level + 1, num);  // 递归遍历左子树
+        Levcount(t->rchild, level + 1, num);  // 递归遍历右子树
+    }
+}
 
 // 根据先序序列创建二叉树
 BTree CreateBinTree() {
@@ -40,6 +77,25 @@ void Preorder(BTree t) {
     }
 }
 
+// 中序遍历
+void Inorder(BTree t) {
+    if (t) {
+        Inorder(t->lchild);   // 遍历左子树
+        Visit(t->data);       // 访问根节点
+        Inorder(t->rchild);   // 遍历右子树
+    }
+}
+
+// 后序遍历
+void Postorder(BTree t) {
+    if (t) {
+        Postorder(t->lchild); // 遍历左子树
+        Postorder(t->rchild); // 遍历右子树
+        Visit(t->data);       // 访问根节点
+    }
+}
+
+
 int main() {
     BTree root;
     printf("请输入先序序列（#代表空节点）: ");
@@ -47,6 +103,14 @@ int main() {
 
     printf("\n先序遍历结果: ");
     Preorder(root);  // 输出先序遍历的结果
+    printf("\n");
+
+    printf("中序遍历: ");
+    Inorder(root);
+    printf("\n");
+
+    printf("后序遍历: ");
+    Postorder(root);
     printf("\n");
 
     return 0;
