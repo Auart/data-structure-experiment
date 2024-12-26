@@ -1,119 +1,94 @@
-
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 
 #define MAX_SIZE 20
 
-typedef struct car
-{
+typedef struct car {
     char num[10];
     char name[10];
 } Car;
 
-typedef struct
-{
+typedef struct {
     Car data[MAX_SIZE];
-    int n;
-    int top;
+    int n;   /* 栈容量 */
+    int top; /* 顺序栈 */
 } Stack;
 
-typedef struct
-{
+typedef struct {
     Car data[MAX_SIZE];
-    int n;
-    int num;
-    int front, rear;
+    int n;   /* 队列容量 */
+    int num; /* 队列中车辆数量 */
+    int front, rear; /* 循环队列 */
 } Queue;
 
-Stack *SCar;
-Queue *QCar;
+Stack *SCar;  /* 车站内车辆栈 */
+Queue *QCar;  /* 通道内车辆队列 */
 
 void carmenu(void);
-void InitStack(Stack *S)
-{
+
+void InitStack(Stack *S) {
     S->top = -1;
     S->n = MAX_SIZE;
 }
 
-void InitQueue(Queue *Q)
-{
+void InitQueue(Queue *Q) {
     Q->front = Q->rear = Q->num = 0;
     Q->n = MAX_SIZE;
 }
 
-int Push(Stack *S, Car x)
-{
+int Push(Stack *S, Car x) { /* 入栈操作 */
     if (S->top == S->n - 1)
-    {
-        return (-1);
-    }
+        return -1;
     S->top++;
     S->data[S->top] = x;
-    return (0);
+    return 0;
 }
 
-int Pop(Stack *S, Car *px)
-{
+int Pop(Stack *S, Car *px) { /* 出栈操作 */
     if (S->top == -1)
-    {
-        return (-1);
-    }
+        return -1;
+    *px = S->data[S->top];
     S->top--;
-    *px = S->data[S->top + 1];
-    return (0);
+    return 0;
 }
 
-int InsertQueue(Queue *Q, Car x)
-{
-    if (((Q->rear + 1) % Q->n) == Q->rear)
-    {
-        return (-1);
-    }
-    Q->num++;
+int InsertQueue(Queue *Q, Car x) { /* 入队 */
+    if (((Q->rear + 1) % Q->n) == Q->front) /* 队列已满 */
+        return -1;
     Q->data[Q->rear] = x;
     Q->rear = (Q->rear + 1) % Q->n;
-    return (0);
+    Q->num++;
+    return 0;
 }
 
-int DeleteQueue(Queue *Q, Car *x)
-{
-    if (Q->front == Q->rear)
-    {
-        return (-1);
-    }
-    Q->num--;
+int DeleteQueue(Queue *Q, Car *x) { /* 出队 */
+    if (Q->front == Q->rear) /* 队列为空 */
+        return -1;
     *x = Q->data[Q->front];
     Q->front = (Q->front + 1) % Q->n;
-    return (0);
+    Q->num--;
+    return 0;
 }
 
-void ShowCar(void)
-{
+void ShowCar(void) { /* 显示车站和通道车辆信息 */
     int i, front, rear;
-    if (SCar->top == -1)
-    {
-        printf("\nThe carpark is empty!\n");
+    if (SCar->top == -1) {
+        printf("\n\nThe carpark is empty!\n");
         getchar();
-        return;
+        carmenu();
     }
-    printf("\nThe Current Car Are: \n "
-           "---car's number-----driver's name\n");
-
-    for (int i = 0; i < SCar->top + 1; i++)
-    {
-        printf("%-13s", SCar->data[i].num);
+    printf("\n\nThe Current Cars Are:\n---car's number--------driver's name\n");
+    for (i = 0; i <= SCar->top; i++) {
+        printf("     %-13s", SCar->data[i].num);
         printf("%18s\n", SCar->data[i].name);
     }
-
-    if (QCar->rear != QCar->front)
-    {
+    if (QCar->front != QCar->rear) {
         front = QCar->front;
         rear = QCar->rear;
-        printf("\nTong Dao Information:\n---car's number-----driver's name");
-        while (front != rear)
-        {
-            printf("%-13s\n", QCar->data[front].num);
+        printf("\nTong Dao Information:\n---car's number------driver's name\n");
+        while (front != rear) {
+            printf("     %-13s", QCar->data[front].num);
             printf("%18s\n", QCar->data[front].name);
             front = (front + 1) % QCar->n;
         }
@@ -122,191 +97,145 @@ void ShowCar(void)
     carmenu();
 }
 
-void InitCarpark(void)
-{
-    char num[8], *pnum, name[10], *pname;
+void InitCarpark(void) { /* 初始化车站车辆 */
+    char num[10], name[10];
     Car pcar;
-    pnum = num;
-    pname = name;
-    printf("\n\n input car's information (end of '# #') : \n");
-    scanf("%s%s", pnum, pname);
-    while (strcmp(pnum, "#") != 0)
-    {
-        strcpy(pcar.num, pnum);
-        strcpy(pcar.name, pname);
-        if (Push(SCar, pcar) == -1)
-        {
-            printf("\nche zhan yi man! che liang yi jin ru tong dao!\n");
-            getchar();
+    printf("\n\nInput car's information (end with '##'):\n");
+    while (1) {
+        scanf("%s", num);  // 输入车牌号
+        if (strcmp(num, "##") == 0) break;  // 当输入'##'时退出循环
+        scanf("%s", name);  // 输入司机名字
+        strcpy(pcar.num, num);
+        strcpy(pcar.name, name);
+        if (Push(SCar, pcar) == -1) {  // 如果车场已满，转入通道
+            printf("\nche zhan yi man!che liang yi jin ru tong dao!\n");
             if (InsertQueue(QCar, pcar) == -1)
-            {
-                printf("\n Insert Tong Dao Failed!\n");
-            }
+                printf("\nInsert Tong Dao Failed!\n");
             break;
         }
-        scanf("%s%s", pnum, pname);
     }
-    carmenu();
+    printf("\nCars Enter Success!\n");  // 提示信息
+    getchar();  // 读取并忽略缓冲区中的换行符
+    carmenu();  // 返回主菜单
 }
 
-void InsertCar(void)
-{
-    char num[10], *pnum, name[10], *pname;
+
+void InsertCar(void) { /* 新车入站 */
+    char num[10], name[10];
     Car pcar;
-    pnum = num;
-    pname = name;
-    printf("\n\n Please input car's inforation: \n");
-    scanf("%s%s", pnum, pname);
-    strcpy(pcar.num, pnum);
-    strcpy(pcar.name, pname);
-    if (Push(SCar, pcar) == -1)
-    {
-        printf("\nche zhan yi man! che liang yi jin ru tong dao!\n");
-        getchar();
+    printf("\n\nPlease input car's information:\n");
+    scanf("%s%s", num, name);
+    strcpy(pcar.num, num);
+    strcpy(pcar.name, name);
+    if (Push(SCar, pcar) == -1) {
+        printf("\nche zhan yi man!che liang yi jin ru tong dao!\n");
         if (InsertQueue(QCar, pcar) == -1)
-        {
-            printf("\n Insert Tong Dao Failed!\n");
-        }
+            printf("\nInsert Tong Dao Failed!\n");
     }
     carmenu();
 }
 
-void ExitCar(void)
-{
-    int i, position, flag = 0;
+void ExitCar(void) { /* 车辆出站 */
+    int i, position = -1;
     Car x;
     Stack *S;
-    char num[10], *pnum;
-    pnum = num;
-    if (SCar->top == -1)
-    {
-        printf("\n\n The carpark is empty!\n");
+    char num[10];
+    if (SCar->top == -1) {
+        printf("\n\nThe carpark is empty!\n");
         getchar();
         carmenu();
     }
-    printf("\n\n Please input car's number: \n");
-    scanf("%s", pnum);
-    for (i = 0; i < SCar->top + 1; i++)
-    {
-        if (strcmp(SCar->data[i].num, pnum) == 0)
-        {
-            flag = 1;
+    printf("\n\nPlease input car's number:\n");
+    scanf("%s", num);
+    for (i = 0; i <= SCar->top; i++) {
+        if (strcmp(SCar->data[i].num, num) == 0) {
             position = i;
+            break;
         }
     }
-    if (flag == 0)
-    {
-        printf("car not found!");
+    if (position == -1) {
+        printf("Car not found!\n");
         getchar();
         carmenu();
     }
-    if ((S = (Stack *)malloc(sizeof(Stack))) == NULL)
-    {
-        printf("Failed!");
+    if ((S = (Stack *)malloc(sizeof(Stack))) == NULL) {
+        printf("Memory allocation failed!\n");
         exit(1);
     }
     InitStack(S);
-    for (i = SCar->top; i > position; i--)
-    {
+    for (i = SCar->top; i > position; i--) {
         Pop(SCar, &x);
         Push(S, x);
     }
     Pop(SCar, &x);
-    while (S->top != -1)
-    {
+    while (S->top != -1) {
         Pop(S, &x);
         Push(SCar, x);
     }
-    if (QCar->rear != QCar->front)
-    {
+    free(S);
+    if (QCar->front != QCar->rear) {
         DeleteQueue(QCar, &x);
         Push(SCar, x);
-        printf("\n Exit Success!\n");
-        getchar();
-        carmenu();
     }
+    printf("\nExit Success!\n");
+    getchar();
+    carmenu();
 }
 
-void SetCar(void)
-{
-    int n, flag = 1;
-    printf("\n\n The current paramenter of carpark's maxnum is: %d\n", SCar->n);
-    printf("\n\n Please input the carpark's maxsize car number: (<=%d) \n", MAX_SIZE);
-    do
-    {
+void SetCar(void) { /* 设置车站容量 */
+    int n;
+    printf("\n\nThe current parameter of carpark's maxnum is: %d\n", SCar->n);
+    printf("Please input the carpark's max size (<= %d):\n", MAX_SIZE);
+    while (1) {
         scanf("%d", &n);
-        if (n < SCar->top + 1)
-        {
-            flag = 0;
-            n = SCar->n;
+        if (n >= SCar->top + 1 && n <= MAX_SIZE) {
+            SCar->n = n;
+            printf("\nModify Success!\n");
             break;
+        } else {
+            printf("\nError! che zhan che liang yi chao guo ci shu!\n");
         }
-    } while (n < 0 || n > MAX_SIZE);
-    SCar->n = n;
-    if (flag != 0)
-    {
-        printf("\n Modify Success!\n");
-    }
-    else
-    {
-        printf("\n Eroor! che zhan che liang yi chao guo ci shu! \n");
     }
     getchar();
     carmenu();
 }
 
-void carmenu(void)
-{
+void carmenu(void) { /* 菜单显示 */
     char ch;
-    printf("\n姓名:张金鑫 学号:242040286 班级:计升247班\n");
-    printf("\n----------------menu----------------\n");
-    printf(
-        "\n 1.init carpark"
-        "\n 2.car enter "
-        "\n 3.car exit"
-        "\n 4.show information"
-        "\n 5.set"
-        "\n 0.exit \n");
-    printf("\n----------------menu----------------\n");
-    printf("\n Please Choose: (1-5)  ");
-    ch = getchar();
-    switch (ch - '0')
-    {
-    case 0:
-        exit(0);
-        break;
-    case 1:
-        InitCarpark();
-        break;
-    case 2:
-        ExitCar();
-        break;
-    case 3:
-        ShowCar();
-        break;
-    case 4:
-        SetCar();
-        break;
-    default:
-        ShowCar();
+	printf("\n姓名：张金鑫  学号：242040286  班级：计升247\n");
+    printf("\n-----------------Menu-----------------\n");
+    printf("1. Init carpark\n2. Car enter\n3. Car exit\n4. Show information\n5. Set carpark size\n0. Exit\n");
+    printf("--------------------------------------\n");
+    printf("Please choose (0-5): ");
+    scanf(" %c", &ch);
+    switch (ch) {
+        case '0': 
+            free(SCar);
+            free(QCar);
+            exit(0);
+        case '1': InitCarpark(); break;
+        case '2': InsertCar(); break;
+        case '3': ExitCar(); break;
+        case '4': ShowCar(); break;
+        case '5': SetCar(); break;
+        default: 
+            printf("Invalid choice! Try again.\n");
+            carmenu();
     }
 }
 
-int main(void)
-{
-    if ((SCar = (Stack *)malloc(sizeof(Stack))) == NULL)
-    {
-        printf("Failed!");
-        exit(1);
+int main(void) {
+    if ((SCar = (Stack *)malloc(sizeof(Stack))) == NULL) {
+        printf("Memory allocation failed for SCar!\n");
+        return 1;
     }
-    if ((QCar = (Queue *)malloc(sizeof(Queue))) == NULL)
-    {
-        printf("Failed!");
-        exit(1);
+    if ((QCar = (Queue *)malloc(sizeof(Queue))) == NULL) {
+        printf("Memory allocation failed for QCar!\n");
+        free(SCar);
+        return 1;
     }
     InitStack(SCar);
     InitQueue(QCar);
-
     carmenu();
-    exit(0);
+    return 0;
 }
